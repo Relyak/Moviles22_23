@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".calculadora_interfaces.Calculadora"
+    android:background="@color/black">
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/primerVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.01"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/segundaVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.24"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/terceraVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.49"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/cuartaVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.74"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ultimaVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.99"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/primeraHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.01"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/segundaHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="258dp"
+        app:layout_constraintGuide_percent="0.25" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/terceraHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.38"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/cuartaHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.51"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/quintaHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.64"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/sextaHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.77"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/septimaHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.90"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ultimaHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="36dp"
+        app:layout_constraintGuide_percent="0.99"/>
+    <TextView
+        android:id="@+id/resultado"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:background="#FF9800"
+        android:gravity="right|center_vertical"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="35dp"
+        app:layout_constraintBottom_toBottomOf="@+id/segundaHorizontal"
+        app:layout_constraintEnd_toEndOf="@id/ultimaVertical"
+        app:layout_constraintStart_toStartOf="@+id/primerVertical"
+        app:layout_constraintTop_toTopOf="@+id/primeraHorizontal" />
+    <Button
+        android:id="@+id/borrar"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:width="5dp"
+        android:height="10dp"
+        android:backgroundTint="#FF9800"
+        android:textColor="@color/black"
+        android:text="C"
+        app:layout_constraintBottom_toTopOf="@+id/terceraHorizontal"
+        app:layout_constraintEnd_toStartOf="@+id/segundaVertical"
+        app:layout_constraintStart_toStartOf="@+id/primerVertical"
+        app:layout_constraintTop_toTopOf="@+id/segundaHorizontal" />
+    <Button
+        android:id="@+id/sumar"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:text="+"
+        android:backgroundTint="#FF9800"
+        android:textColor="@color/black"
+        android:width="5dp"
+        android:height="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/terceraHorizontal"
+        app:layout_constraintEnd_toStartOf="@+id/terceraVertical"
+        app:layout_constraintStart_toStartOf="@+id/segundaVertical"
+        app:layout_constraintTop_toTopOf="@+id/segundaHorizontal" />
+    <Button
+        android:id="@+id/restar"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:text="-"
+        android:backgroundTint="#FF9800"
+        android:textColor="@color/black"
+        android:width="5dp"
+        android:height="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/terceraHorizontal"
+        app:layout_constraintEnd_toStartOf="@+id/cuartaVertical"
+        app:layout_constraintStart_toStartOf="@+id/terceraVertical"
+        app:layout_constraintTop_toTopOf="@+id/segundaHorizontal" />
+
+    <Button
+        android:id="@+id/dividir"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:width="5dp"
+        android:height="10dp"
+        android:backgroundTint="#FF9800"
+        android:textColor="@color/black"
+        android:text="/"
+        app:layout_constraintBottom_toTopOf="@+id/terceraHorizontal"
+        app:layout_constraintEnd_toStartOf="@+id/ultimaVertical"
+        app:layout_constraintStart_toStartOf="@+id/cuartaVertical"
+        app:layout_constraintTop_toTopOf="@+id/segundaHorizontal" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
