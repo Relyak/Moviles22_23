@@ -8,15 +8,15 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface PokedexDAO {
-    @Query("SELECT * FROM pokedex")
-    List<Pokedex> getAll();
+public interface PokemonDAO {
+    @Query("SELECT * FROM pokemon")
+    List<Pokemon> getAll();
 
     @Insert
-    void insertAll(Pokedex... pokedexes);
+    void insertAll(Pokemon... users);
 
 
 
     @Delete
-    void delete(Pokedex user);
+    void delete(Pokemon user);
 }

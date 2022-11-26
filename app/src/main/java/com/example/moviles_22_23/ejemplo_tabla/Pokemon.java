@@ -1,8 +1,6 @@
 package com.example.moviles_22_23.ejemplo_tabla;
 
 
-import android.text.Editable;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -10,8 +8,8 @@ import androidx.room.PrimaryKey;
 
 import java.util.UUID;
 
-@Entity(tableName = "pokedex")
-public class Pokedex {
+@Entity(tableName = "pokemon")
+public class Pokemon {
     @PrimaryKey
     @NonNull
     public String id;
@@ -19,7 +17,7 @@ public class Pokedex {
     public String num;
     @ColumnInfo(name="nombre")
     public String nombre;
-    public Pokedex(){
+    public Pokemon(){
         id= UUID.randomUUID().toString();
     }
 }

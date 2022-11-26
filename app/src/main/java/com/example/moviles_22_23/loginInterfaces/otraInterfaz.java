@@ -24,11 +24,7 @@ public class otraInterfaz extends AppCompatActivity {
         para=findViewById(R.id.boton_para);
         para.setOnClickListener(v -> para());
         empieza();
-
-
-
     }
-
     private void empieza(){
         player.start();
         try {
@@ -38,13 +34,9 @@ public class otraInterfaz extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
-
-
     private void para() {gif.setVisibility(View.INVISIBLE);
     player.stop();
-
     }
 
 

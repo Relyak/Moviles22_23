@@ -12,13 +12,13 @@ import com.example.moviles_22_23.R;
 
 import java.util.List;
 
-public class tabla_pokemon extends AppCompatActivity {
+public class EjecutarBDD extends AppCompatActivity {
     Button anadir;
     Button recargar;
     EditText nombre,numero;
     TextView mostrar;
-    baseDex db;
-    PokedexDAO pokedexDao;
+    AppDatabase db;
+    PokemonDAO pokedexDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,18 +33,18 @@ public class tabla_pokemon extends AppCompatActivity {
 
 
         db= Room.databaseBuilder(getApplicationContext(),
-                baseDex.class, "pokedex").allowMainThreadQueries().build();
+                AppDatabase.class, "pokedex").allowMainThreadQueries().build();
         pokedexDao=db.pokedexDAO();
         recargar.setOnClickListener( v->{
-            List<Pokedex> pokemon=pokedexDao.getAll();
+            List<Pokemon> pokemon=pokedexDao.getAll();
             String sDatos="";
-            for (Pokedex a: pokemon){
+            for (Pokemon a: pokemon){
                 sDatos+=a.nombre +" num dex: "+a.num+"\n";
             }
             mostrar.setText(sDatos);
         });
         anadir.setOnClickListener(v->{
-            Pokedex a= new Pokedex();
+            Pokemon a= new Pokemon();
             a.nombre=nombre.getText().toString();
             a.num=numero.getText().toString();
             pokedexDao.insertAll(a);

@@ -37,7 +37,6 @@ public class login_interfaces extends AppCompatActivity {
                     usuarioContrasena.setText("");
                 startActivity(intentItfc);}else{
                     usuarioContrasena.setText("Usuario o contraseña incorrecta");
-
                 }
             }
         });
