@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Database;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +15,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class mainAgenda extends AppCompatActivity {
+public class mainAgenda extends AppCompatActivity implements View.OnClickListener {
     private ArrayList<Persona> personas;
     private RecyclerView rv1;
+    appDataBase db;//ni idea brother
     Button anadir,borrar;
     private EditText et1;
+    private PersonaDAO personaDAO;
     private recyclerAdapter.RecyclerViewClickListener listener;
     private EditText et2;
     private String nom,tel;
@@ -28,30 +33,18 @@ public class mainAgenda extends AppCompatActivity {
         setContentView(R.layout.main_agenda);
         rv1=findViewById(R.id.rv1);
         personas=new ArrayList<>();
+        getSupportActionBar().hide();//oculta barra de arriba
+        createORM();
+
         setUserInfo();
+
         setAdapter();
-        anadir=findViewById(R.id.anadir);
+
+        anadir=findViewById(R.id.anadir); anadir.setOnClickListener(this);
         borrar=findViewById(R.id.borrar);
         et1=findViewById(R.id.et1);
         et2=findViewById(R.id.et2);
 
-        anadir.setOnClickListener(view -> {
-            nom=et1.getText().toString();
-            tel=et2.getText().toString();
-            if(
-                    (!nom.equals(""))&&
-                    (!tel.equals(""))
-            ){
-
-            personas.add(new Persona(nom,tel));
-
-            et1.setText("");
-            et2.setText("");
-            Toast.makeText(this,"Persona agregada",Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this,"Datos vacios",Toast.LENGTH_SHORT).show();
-            }
-        });
         borrar.setOnClickListener(view -> {
             int pos=-1;
             for(int i=0;i<personas.size();i++){
@@ -71,6 +64,28 @@ public class mainAgenda extends AppCompatActivity {
 
     }
 
+    public void createORM () {
+        //Se crea la base de datos
+        db = Room.databaseBuilder(getApplicationContext(),
+                appDataBase.class, "tablaPersonas").allowMainThreadQueries().build();
+        personaDAO = db.personaDAO();//extrae datos de la bd para darle al dao?
+
+        //extr4e el contenido de la bd
+        List<tablaPersona> personaBD= personaDAO.getAll();//le estoy metiendo
+        //el objeto, la lista, está extrayendo todas las tuplas
+        //y se la meto al objeto uwu
+
+        //Recorre la base e anade al ArrayList utilizado
+        //mirar como funciona for each:
+        //primer valor tabla, segundo valor objeto bd
+        for(tablaPersona a /*objeto vacio de la BD*/: personaBD) {
+            personas.add(new Persona(a.nombre,a.telefono));
+        }
+
+
+
+
+    }
     private void setAdapter() {
         setOnClickListener();
         recyclerAdapter adapter=new recyclerAdapter(personas,listener);
@@ -86,6 +101,8 @@ public class mainAgenda extends AppCompatActivity {
             public void onClick(View v, int position) {
                 Intent intent= new Intent(getApplicationContext(),perfilPersona.class);
                 intent.putExtra("nombre",personas.get(position).getNombre());
+                intent.putExtra("tel",personas.get(position).getTel());
+
                 startActivity(intent);
             }
         };
@@ -98,6 +115,35 @@ public class mainAgenda extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View view) {
+        nintendo(view.getId());
+    }
+    public void nintendo(int aaaa){
+        switch(aaaa){
+            case R.id.anadir:
+                nom=et1.getText().toString();
+                tel=et2.getText().toString();
+                if(
+                        (!nom.equals(""))&&
+                                (!tel.equals(""))
+                ){
+                    tablaPersona datoss=new tablaPersona();
+                    datoss.nombre=nom;
+                    datoss.telefono=tel;
+                    personaDAO.insertAll(datoss);
+
+                    et1.setText("");
+                    et2.setText("");
+                    Toast.makeText(this,"Persona agregada",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this,"Datos vacios",Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+
+        }
+    }
 
     /*
     public void agregar(View v){

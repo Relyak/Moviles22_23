@@ -29,35 +29,7 @@
 
         </activity>
 
-        <activity
-            android:name=".loginInterfaces.otraInterfaz"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
 
-        </activity>
-        <activity
-            android:name=".loginInterfaces.login_interfaces"
-            android:exported="true">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-
-        </activity>
-        <activity
-            android:name=".calculadora_interfaces.Calculadora"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".viaje.receptor_viaje"
             android:exported="false">
@@ -65,13 +37,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity
-            android:name=".viaje.lanzador_viaje"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
         <activity
             android:name=".ejemplo_varias_vistas.receptora"
             android:exported="false">
@@ -86,27 +52,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity
-            android:name=".datos.insertarDatos"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".juego_piedpaptij.Juego"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".contador_layouts.Contador_clase"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
     </application>
 
 </manifest>
