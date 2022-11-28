@@ -72,6 +72,11 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
                 Intent intent= new Intent(this,mainAgenda.class);
                 startActivity(intent);
                 break;
+            case R.id.borrar:
+                for
+
+
+                break;
         }
     }
 }

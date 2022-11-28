@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Database;
 import androidx.room.Room;
 
 import android.content.Intent;
@@ -102,7 +101,6 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
                 Intent intent= new Intent(getApplicationContext(),perfilPersona.class);
                 intent.putExtra("nombre",personas.get(position).getNombre());
                 intent.putExtra("tel",personas.get(position).getTel());
-
                 startActivity(intent);
             }
         };
