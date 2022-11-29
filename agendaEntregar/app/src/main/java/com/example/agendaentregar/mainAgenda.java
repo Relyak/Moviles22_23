@@ -55,7 +55,7 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
 
         recibidorLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(), result ->{
-                   refrescarRV();
+                    refrescarRV();
 
 
                 });
@@ -67,7 +67,7 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
         personaDAO = db.personaDAO();//extrae datos de la bd para darle al dao?
 
         //extr4e el contenido de la bd
-         personas= personaDAO.getAll();//le estoy metiendo
+        personas= personaDAO.getAll();//le estoy metiendo
         //el objeto, la lista, está extrayendo todas las tuplas
         //y se la meto al objeto uwu
 
@@ -122,14 +122,14 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
 
                 if(nom.equals("")){
                     et1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-                    }else{
-                        et1.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
-                        }
+                }else{
+                    et1.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+                }
                 if(tel.equals("")){
                     et2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-                    }else{
-                        et2.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
-                    }
+                }else{
+                    et2.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+                }
                 if(
                         (!nom.equals(""))&&
                                 (!tel.equals(""))

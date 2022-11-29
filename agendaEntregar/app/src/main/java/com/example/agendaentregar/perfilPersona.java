@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +34,8 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
     TextView tvNombre, tvTel;
     EditText etNombre, etTel;
     Button boton, borrar, modificar;
-    ImageView img;
+    private Uri uriCapturada;
+    ImageView imagen;
     Intent intent;
     ActivityResultLauncher<String> requestPermissionLauncher;
     ActivityResultLauncher rLauncher;
@@ -69,7 +71,7 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
 
         etNombre.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
         etTel.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
-
+        imagen =findViewById(R.id.imagen);
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (isGranted) {
                 // Permission is granted. Continue the action or workflow in your
@@ -84,6 +86,25 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(this, "Necesitamos permiso para llamar", Toast.LENGTH_SHORT).show();
             }
         });
+
+        ActivityResultLauncher<Intent>imgResult = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode()==RESULT_OK){
+                        Intent data = result.getData();
+                        uriCapturada = data.getData();
+                        getContentResolver().takePersistableUriPermission(uriCapturada, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        imagen.setImageURI(uriCapturada);
+                    }
+                }
+        );
+
+        imagen.setOnClickListener(v-> {
+                Intent i =new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                i.putExtra(MediaStore.EXTRA_OUTPUT, uriCapturada);
+                imgResult.launch(i);
+        });
+
     }
 
     public void createORM () {
@@ -119,50 +140,51 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
                 String vNom= etNombre.getText().toString();
                 String vTel=etTel.getText().toString();
                 for(tablaPersona a /*objeto vacio de la BD*/: personaBD) {
-                        if(a.nombre.equals(tvNombre.getText().toString())){
-                                a.nombre=vNom;
-                                a.telefono=vTel;
-                                if(a.nombre.equals("")){
-                                    etNombre.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-                                }else{
-                                    etNombre.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
-                                    }
-                                if(a.telefono.equals("")){
-                                    etTel.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-                                }else{
-                                    etTel.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
-                                    }
-                                if(
-                                        !(a.nombre.equals(""))
-                                                &&!(a.telefono.equals(""))
-                                ){
-                                personaDAO.updateRecord(a);
-                                    etNombre.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
-                                    etTel.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
-                                Toast.makeText(getApplicationContext(),"Has modificado un individuo",Toast.LENGTH_SHORT).show();
-                                retornar();
-                                }else{
-                                    Toast.makeText(getApplicationContext(),"Datos vacíos",Toast.LENGTH_SHORT).show();
-                                }
+                    if(a.nombre.equals(tvNombre.getText().toString())){
+                        a.nombre=vNom;
+                        a.telefono=vTel;
+                        if(a.nombre.equals("")){
+                            etNombre.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                        }else{
+                            etNombre.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
                         }
+                        if(a.telefono.equals("")){
+                            etTel.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                        }else{
+                            etTel.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+                        }
+                        if(
+                                !(a.nombre.equals(""))
+                                        &&!(a.telefono.equals(""))
+                        ){
+                            personaDAO.updateRecord(a);
+                            etNombre.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+                            etTel.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+                            Toast.makeText(getApplicationContext(),"Has modificado un individuo",Toast.LENGTH_SHORT).show();
+                            retornar();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Datos vacíos",Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
                 break;
             case R.id.borrar:
                 personaBD= personaDAO.getAll();
                 for(tablaPersona a /*objeto vacio de la BD*/: personaBD) {
                     if(a.nombre.equals(tvNombre.getText().toString())){
-                    personaDAO.delete(a);
+                        personaDAO.delete(a);
                     }
                 }
                 Toast.makeText(getApplicationContext(),"Has borrado un individuo",Toast.LENGTH_SHORT).show();
                 retornar();
                 break;
+
         }
     }
     public void retornar(){
-            //
+        //
 
-         intent = new Intent(this,mainAgenda.class);
+        intent = new Intent(this,mainAgenda.class);
         setResult(PARAFILTRAR,intent);
         finish();
     }
@@ -202,6 +224,3 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
 
 
 }
-
-
-
