@@ -4,22 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#7C98B3"
     android:orientation="vertical">
 
 
-            <TextView
-                android:id="@+id/tvnombre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="nombre"
-                android:textSize="30dp" />
-            <TextView
-                android:id="@+id/tvtelefono"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Telefono"
-                android:textSize="30dp" />
+    <TextView
+        android:id="@+id/tvnombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="10"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Nombre"
+        android:textSize="30dp"
+        android:textStyle="italic" />
 
+    <TextView
+        android:id="@+id/tvtelefono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="10"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Telefono"
+        android:textFontWeight="700"
+
+        android:textSize="30dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+
+        android:layout_marginTop="3dp"
+        android:background="@color/black" />
 
 
 </LinearLayout>

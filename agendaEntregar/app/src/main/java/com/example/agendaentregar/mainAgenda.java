@@ -1,5 +1,7 @@
 package com.example.agendaentregar;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class mainAgenda extends AppCompatActivity implements View.OnClickListener {
-    private ArrayList<Persona> personas;
+    private List<tablaPersona> personas;
     private RecyclerView rv1;
     appDataBase db;//ni idea brother
-    Button anadir,borrar;
+    Button anadir;
+    recyclerAdapter adapter;
     private EditText et1;
     private PersonaDAO personaDAO;
     private recyclerAdapter.RecyclerViewClickListener listener;
     private EditText et2;
+    ActivityResultLauncher recibidorLauncher;
     private String nom,tel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,35 +40,26 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
         personas=new ArrayList<>();
         getSupportActionBar().hide();//oculta barra de arriba
         createORM();
-
-        setUserInfo();
-
         setAdapter();
+        refrescarRV();
 
         anadir=findViewById(R.id.anadir); anadir.setOnClickListener(this);
-        borrar=findViewById(R.id.borrar);
+
         et1=findViewById(R.id.et1);
         et2=findViewById(R.id.et2);
-
-        borrar.setOnClickListener(view -> {
-            int pos=-1;
-            for(int i=0;i<personas.size();i++){
-                if(personas.get(i).getNombre().equals(et1.getText().toString())){
-                    pos=i;
-                }
-                if(pos!=1){
-                    personas.remove(pos);
-                    et1.setText("");
-                    Toast.makeText(this,"Persona eliminada",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(this,"No existe esa persona",Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        });
-
+        et1.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+        et2.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+        launcher();
     }
+    public void launcher(){
 
+        recibidorLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(), result ->{
+                   refrescarRV();
+
+
+                });
+    }
     public void createORM () {
         //Se crea la base de datos
         db = Room.databaseBuilder(getApplicationContext(),
@@ -70,16 +67,14 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
         personaDAO = db.personaDAO();//extrae datos de la bd para darle al dao?
 
         //extr4e el contenido de la bd
-        List<tablaPersona> personaBD= personaDAO.getAll();//le estoy metiendo
+         personas= personaDAO.getAll();//le estoy metiendo
         //el objeto, la lista, está extrayendo todas las tuplas
         //y se la meto al objeto uwu
 
         //Recorre la base e anade al ArrayList utilizado
         //mirar como funciona for each:
         //primer valor tabla, segundo valor objeto bd
-        for(tablaPersona a /*objeto vacio de la BD*/: personaBD) {
-            personas.add(new Persona(a.nombre,a.telefono));
-        }
+
 
 
 
@@ -87,11 +82,14 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
     }
     private void setAdapter() {
         setOnClickListener();
-        recyclerAdapter adapter=new recyclerAdapter(personas,listener);
+        //Toast.makeText(getApplicationContext(),personas.get(0).getTel(), Toast.LENGTH_SHORT).show();
+        adapter=new recyclerAdapter(personas,listener);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getApplicationContext());
         rv1.setLayoutManager(layoutManager);
         rv1.setItemAnimator(new DefaultItemAnimator());
         rv1.setAdapter(adapter);
+
+
     }
 
     private void setOnClickListener() {
@@ -101,17 +99,16 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
                 Intent intent= new Intent(getApplicationContext(),perfilPersona.class);
                 intent.putExtra("nombre",personas.get(position).getNombre());
                 intent.putExtra("tel",personas.get(position).getTel());
-                startActivity(intent);
+                recibidorLauncher.launch(intent);
+
+
+
+
             }
         };
     }
 
-    private void setUserInfo() {
 
-    }
-    private void cargarImagen(){
-
-    }
 
     @Override
     public void onClick(View view) {
@@ -122,6 +119,17 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
             case R.id.anadir:
                 nom=et1.getText().toString();
                 tel=et2.getText().toString();
+
+                if(nom.equals("")){
+                    et1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                    }else{
+                        et1.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+                        }
+                if(tel.equals("")){
+                    et2.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+                    }else{
+                        et2.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+                    }
                 if(
                         (!nom.equals(""))&&
                                 (!tel.equals(""))
@@ -134,6 +142,7 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
                     et1.setText("");
                     et2.setText("");
                     Toast.makeText(this,"Persona agregada",Toast.LENGTH_SHORT).show();
+                    refrescarRV();
                 }else{
                     Toast.makeText(this,"Datos vacios",Toast.LENGTH_SHORT).show();
                 }
@@ -142,37 +151,10 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
 
         }
     }
-
-    /*
-    public void agregar(View v){
-        Persona nuevaP=new Persona(et1.getText().toString(),et2.getText().toString());
-        personas.add(nuevaP);
-        et1.setText("");
-        et2.setText("");
-        ap.notifyDataSetChanged();
-        rv1.scrollToPosition(personas.size()-1);
+    public void refrescarRV(){
+        personas= personaDAO.getAll();
+        setAdapter();
     }
-    public void mostrar(int pos){
-        et1.setText(personas.get(pos).getNombre());
-        et2.setText(personas.get(pos).getTelefono());
-    }
-    public void eliminar(View v){
-        int pos=-1;
-        for(int i=0;i<personas.size();i++){
-            if(personas.get(i).getNombre().equals(et1.getText().toString())){
-                pos=i;
-            }
-            if(pos!=1){
-                personas.remove(pos);
-                et1.setText("");
-                et2.setText("");
-                ap.notifyDataSetChanged();
-                Toast.makeText(this,"Persona eliminada",Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this,"No existe esa persona",Toast.LENGTH_SHORT).show();
-            }
-        }
-    }/*/
 
 
 

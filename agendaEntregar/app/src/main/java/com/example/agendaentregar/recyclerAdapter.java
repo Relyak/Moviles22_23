@@ -11,11 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MiViewHolder> {
-    private ArrayList<Persona> personas;
+    private List<tablaPersona> personas;
     private RecyclerViewClickListener listener;
-    public recyclerAdapter(ArrayList<Persona>personas, RecyclerViewClickListener listener){
+    public recyclerAdapter(List<tablaPersona>personas, RecyclerViewClickListener listener){
         this.listener=listener;
         this.personas=personas;
     }
@@ -66,4 +67,6 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MiView
     public interface RecyclerViewClickListener{
         void onClick(View v,int position);
     }
+
+
 }
