@@ -38,7 +38,8 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
     ImageView imagen;
     Intent intent;
     ActivityResultLauncher<String> requestPermissionLauncher;
-    ActivityResultLauncher rLauncher;
+
+    ActivityResultLauncher<Intent>imgResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +69,8 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
 
         modificar = findViewById(R.id.modificar);
         modificar.setOnClickListener(this);
-
+        imagen = findViewById(R.id.imagen);
+        imagen.setOnClickListener(this);
         etNombre.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
         etTel.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
         imagen =findViewById(R.id.imagen);
@@ -87,7 +89,7 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        ActivityResultLauncher<Intent>imgResult = registerForActivityResult(
+      imgResult = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode()==RESULT_OK){
@@ -99,11 +101,6 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
                 }
         );
 
-        imagen.setOnClickListener(v-> {
-                Intent i =new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                i.putExtra(MediaStore.EXTRA_OUTPUT, uriCapturada);
-                imgResult.launch(i);
-        });
 
     }
 
@@ -178,9 +175,22 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
                 Toast.makeText(getApplicationContext(),"Has borrado un individuo",Toast.LENGTH_SHORT).show();
                 retornar();
                 break;
+            case R.id.imagen:
+
+                  metelImagen();
+
+                break;
 
         }
     }
+
+    public void metelImagen(){
+        Intent i =new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        i.putExtra(MediaStore.EXTRA_OUTPUT, uriCapturada);
+        imgResult.launch(i);
+    }
+
+
     public void retornar(){
         //
 
