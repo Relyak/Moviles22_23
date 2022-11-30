@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,7 +42,7 @@ public class lanzador_viaje extends AppCompatActivity implements View.OnClickLis
     boolean check_nombre=false;
     //patron de dni
     Pattern dni_nie_patron = Pattern.compile("^[XYZ]?([0-9]{7,8})([A-Z])$");
-
+    cViaje datos=new cViaje();
 
     public static String IDENTIFICADOR_RECEPTOR = "CLAVE_PARA_MANDAR_A_RECEPTOR";
     @Override
@@ -50,6 +52,8 @@ public class lanzador_viaje extends AppCompatActivity implements View.OnClickLis
         //le doy señalo los ID de mi layout, a los que son click les asigno
         // el clickListener con this para tener un solo metodo para varios clicks
         //Edit text
+
+
         nombre=findViewById(R.id.nombre);
         dni=findViewById(R.id.dni);
         recogida=findViewById(R.id.recogida);
@@ -90,37 +94,41 @@ public class lanzador_viaje extends AppCompatActivity implements View.OnClickLis
     }
 
     private void lanzar(){
+
         Intent intento =  new Intent(this, receptor_viaje.class);
-        intento.putExtra(IDENTIFICADOR_RECEPTOR, (pantalla()));
+       // intento.putExtra(IDENTIFICADOR_RECEPTOR, (pantalla()));
+        intento.putExtra(IDENTIFICADOR_RECEPTOR,(Serializable) pantalla());
         startActivity(intento);
     }
-
-
-
-    public String pantalla(){
+    public cViaje pantalla(){
         if(ida.isChecked()){
-            String mostrar= ("NOMBRE: "+nombre.getText().toString()+"\n"+
-                    "DNI: "+dni.getText().toString()+"\n"+
-                    "PUNTO DE RECOGIDA: "+recogida.getText().toString()+"\n"+
-                    "FECHA DE IDA: "+fechaIda.getText().toString()+"\n"+
-                    "HORA DE IDA: "+horaIda.getText().toString())+"\n"+
-                    "Origen: "+origen.getSelectedItem().toString()+"\n"+
-                    "Destino: "+destino.getSelectedItem().toString();
-            return mostrar;
-        }
-        else {
-            String mostrar = ("NOMBRE: " + nombre.getText().toString() + "\n" +
-                    "DNI: " + dni.getText().toString() + "\n" +
-                    "PUNTO DE RECOGIDA: " + recogida.getText().toString() + "\n" +
-                    "FECHA DE IDA: " + fechaIda.getText().toString() + "\n" +
-                    "HORA DE IDA: " + horaIda.getText().toString()) + "\n" +
-                    "FECHA DE VUELTA: " + fechaVuelta.getText().toString() + "\n" +
-                    "HORA DE VUELTA: " + horaVuelta.getText().toString() + "\n" +
-                    "Origen: " + origen.getSelectedItem().toString() + "\n" +
-                    "Destino: " + destino.getSelectedItem().toString();
-            return mostrar;
-        }
+            datos.setNombre(nombre.getText().toString());
+            datos.setDni(dni.getText().toString());
+            datos.setRecogida(recogida.getText().toString());
+            datos.setFechaIda(fechaIda.getText().toString());
+            datos.setHoraIda(horaIda.getText().toString());
+            datos.setOrigen(origen.getSelectedItem().toString());
+            datos.setDestino(destino.getSelectedItem().toString());
+            datos.setFechaVuelta("");
+            datos.setHoraVuelta("");
+
+
+            return datos;
+        }else{
+            datos.setNombre(nombre.getText().toString());
+            datos.setDni(dni.getText().toString());
+            datos.setRecogida(recogida.getText().toString());
+            datos.setFechaIda(fechaIda.getText().toString());
+            datos.setHoraIda(horaIda.getText().toString());
+            datos.setFechaVuelta(fechaVuelta.getText().toString());
+            datos.setHoraVuelta(horaVuelta.getText().toString());
+            datos.setOrigen(origen.getSelectedItem().toString());
+            datos.setDestino(destino.getSelectedItem().toString());
+        return datos;
     }
+}
+
+
     public void pulsado(int opcion) {
         switch (opcion){
 
@@ -147,7 +155,6 @@ public class lanzador_viaje extends AppCompatActivity implements View.OnClickLis
             case R.id.horaVuelta:
                 showTimePickerDialog(horaVuelta);
                 break;
-
         }
     }
     private void showDatePickerDialog( EditText texto_sustitutivo) {

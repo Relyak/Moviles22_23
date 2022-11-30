@@ -119,7 +119,6 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
             case R.id.anadir:
                 nom=et1.getText().toString();
                 tel=et2.getText().toString();
-
                 if(nom.equals("")){
                     et1.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
                 }else{
@@ -155,6 +154,7 @@ public class mainAgenda extends AppCompatActivity implements View.OnClickListene
         personas= personaDAO.getAll();
         setAdapter();
     }
+
 
 
 

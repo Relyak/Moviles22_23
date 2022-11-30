@@ -96,6 +96,7 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
                         Intent data = result.getData();
                         uriCapturada = data.getData();
                         getContentResolver().takePersistableUriPermission(uriCapturada, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
                         imagen.setImageURI(uriCapturada);
                     }
                 }
