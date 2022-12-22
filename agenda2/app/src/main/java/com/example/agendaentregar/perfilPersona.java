@@ -27,7 +27,7 @@ import java.util.List;
 
 public class perfilPersona extends AppCompatActivity implements View.OnClickListener {
     appDataBase db;
-    public static int PARAFILTRAR=10;
+    public static int PARAFILTRAR = 10;
     private PersonaDAO personaDAO;
     private ArrayList<tablaPersona> personas;
     List<tablaPersona> personaBD;
@@ -39,7 +39,8 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
     Intent intent;
     ActivityResultLauncher<String> requestPermissionLauncher;
 
-    ActivityResultLauncher<Intent>imgResult;
+    ActivityResultLauncher<Intent> imgResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
         if (extras != null) {
             nombre = extras.getString("nombre");
             tel = extras.getString("tel");
-           // imagen.setImageURI(Uri.parse(extras.getString("img")));
+            // imagen.setImageURI(Uri.parse(extras.getString("img")));
         }
         tvNombre.setText(nombre);
         tvTel.setText(tel);
@@ -90,30 +91,26 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
             }
         });
 
-      imgResult = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode()==RESULT_OK){
-                        Intent data = result.getData();
-                        uriCapturada = data.getData();
-                        getContentResolver().takePersistableUriPermission(uriCapturada, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        String s = uriCapturada.toString();
-                        imagen.setImageURI(Uri.parse(s));
-                    }
-                }
-        );
+        imgResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK) {
+                Intent data = result.getData();
+                uriCapturada = data.getData();
+                getContentResolver().takePersistableUriPermission(uriCapturada, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                String s = uriCapturada.toString();
+                imagen.setImageURI(Uri.parse(s));
+            }
+        });
 
 
     }
 
-    public void createORM () {
+    public void createORM() {
         //Se crea la base de datos
-        db = Room.databaseBuilder(getApplicationContext(),
-                appDataBase.class, "tablaPersona").allowMainThreadQueries().build();
+        db = Room.databaseBuilder(getApplicationContext(), appDataBase.class, "tablaPersona").allowMainThreadQueries().build();
         personaDAO = db.personaDAO();//extrae datos de la bd para darle al dao?
 
         //extr4e el contenido de la bd
-        List<tablaPersona> personaBD= personaDAO.getAll();//le estoy metiendo
+        List<tablaPersona> personaBD = personaDAO.getAll();//le estoy metiendo
         //el objeto, la lista, está extrayendo todas las tuplas
         //y se la meto al objeto uwu
 
@@ -128,91 +125,86 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
     }
 
     private void metodos(int id) {
-        switch (id){
+        switch (id) {
             case R.id.vuelta:
                 retornar();
                 break;
             case R.id.modificar:
 
                 //Extrae el total de la base de datos y comprueba si coincide
-                personaBD= personaDAO.getAll();
-                String vNom= etNombre.getText().toString();
-                String vTel=etTel.getText().toString();
-                for(tablaPersona a /*objeto vacio de la BD*/: personaBD) {
-                    if(a.nombre.equals(tvNombre.getText().toString())){
-                        a.nombre=vNom;
-                        a.telefono=vTel;
-                        a.imagen=uriCapturada.toString();
-                        if(a.nombre.equals("")){
+                personaBD = personaDAO.getAll();
+                String vNom = etNombre.getText().toString();
+                String vTel = etTel.getText().toString();
+                for (tablaPersona a /*objeto vacio de la BD*/: personaBD) {
+                    if (a.nombre.equals(tvNombre.getText().toString())) {
+                        a.nombre = vNom;
+                        a.telefono = vTel;
+                        a.imagen = uriCapturada.toString();
+                        if (a.nombre.equals("")) {
                             etNombre.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-                        }else{
+                        } else {
                             etNombre.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
                         }
-                        if(a.telefono.equals("")){
+                        if (a.telefono.equals("")) {
                             etTel.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-                        }else{
+                        } else {
                             etTel.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
                         }
-                        if(
-                                !(a.nombre.equals(""))
-                                        &&!(a.telefono.equals(""))
-                        ){
+                        if (!(a.nombre.equals("")) && !(a.telefono.equals(""))) {
                             personaDAO.updateRecord(a);
                             etNombre.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
                             etTel.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
-                            Toast.makeText(getApplicationContext(),"Has modificado un individuo",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Has modificado un individuo", Toast.LENGTH_SHORT).show();
                             retornar();
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Datos vacíos",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Datos vacíos", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
                 break;
             case R.id.borrar:
-                personaBD= personaDAO.getAll();
-                for(tablaPersona a /*objeto vacio de la BD*/: personaBD) {
-                    if(a.nombre.equals(tvNombre.getText().toString())){
+                personaBD = personaDAO.getAll();
+                for (tablaPersona a /*objeto vacio de la BD*/: personaBD) {
+                    if (a.nombre.equals(tvNombre.getText().toString())) {
                         personaDAO.delete(a);
                     }
                 }
-                Toast.makeText(getApplicationContext(),"Has borrado un individuo",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Has borrado un individuo", Toast.LENGTH_SHORT).show();
                 retornar();
                 break;
             case R.id.imagen:
 
-                  metelImagen();
+                metelImagen();
 
                 break;
 
         }
     }
 
-    public void metelImagen(){
-        Intent i =new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    public void metelImagen() {
+        Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         i.putExtra(MediaStore.EXTRA_OUTPUT, uriCapturada);
         imgResult.launch(i);
     }
 
 
-    public void retornar(){
+    public void retornar() {
         //
 
-        intent = new Intent(this,mainAgenda.class);
-        setResult(PARAFILTRAR,intent);
+        intent = new Intent(this, mainAgenda.class);
+        setResult(PARAFILTRAR, intent);
         finish();
     }
 
-    private void llamar(){
+    private void llamar() {
         Intent phoneIntent = new Intent(Intent.ACTION_CALL);
         //sin el tel: no entiende que es un numero de telefono
-        phoneIntent.setData(Uri.parse("tel:+34"+tvTel.getText().toString()));
+        phoneIntent.setData(Uri.parse("tel:+34" + tvTel.getText().toString()));
         startActivity(phoneIntent);
     }
 
-    public void llamadaClick(View v){
-        if (ContextCompat.checkSelfPermission(
-                perfilPersona.this, Manifest.permission.CALL_PHONE) ==
-                PackageManager.PERMISSION_GRANTED) {
+    public void llamadaClick(View v) {
+        if (ContextCompat.checkSelfPermission(perfilPersona.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
             // You can use the API that requires the permission.
             llamar();
         } else if (false) {
@@ -231,9 +223,6 @@ public class perfilPersona extends AppCompatActivity implements View.OnClickList
             requestPermissionLauncher.launch(Manifest.permission.CALL_PHONE);
         }
     }
-
-
-
 
 
 }
